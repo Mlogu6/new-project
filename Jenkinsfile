@@ -1,5 +1,8 @@
 pipeline {
    agent any
+   environment {
+      TAG = "v0.${env.BUILD_NUMBER}"
+   }
 
    tools {
       maven 'maven3'  // Specify the Maven tool defined in Jenkins
