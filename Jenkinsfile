@@ -27,12 +27,19 @@ pipeline {
             }
         }
 
-         stage('Docker Image Push') {
+      //    stage('Docker Image Push') {
+      //       steps {
+      //           withCredentials([string(credentialsId: 'dockerPass', variable: 'dockerPassword')]) {
+      //               sh "docker login -u mlogu6 -p ${dockerPassword}"
+      //           }
+      //           sh 'docker push mlogu6/myweb:${TAG}'
+      //       }
+      //   }
+         stage('Nexus Image Push') {
             steps {
-                withCredentials([string(credentialsId: 'dockerPass', variable: 'dockerPassword')]) {
-                    sh "docker login -u mlogu6 -p ${dockerPassword}"
-                }
-                sh 'docker push mlogu6/myweb:${TAG}'
+                sh "docker login -u admin -p admin 3.86.154.89:8083"
+                sh "docker tag mlogu6/myweb:${TAG} 3.86.154.89:8083/myproject:1.0.0"
+                sh "docker push 3.86.154.89:8083/myproject:1.0.0"
             }
         }
 
