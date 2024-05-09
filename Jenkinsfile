@@ -38,8 +38,8 @@ pipeline {
          stage('Nexus Image Push') {
             steps {
                 sh "docker login -u admin -p admin 3.86.154.89:8083"
-                sh "docker tag mlogu6/myweb:${TAG} 3.86.154.89:8083/myproject:${TAG}"
-                sh "docker push 3.86.154.89:8083/myproject:${TAG}"
+                sh "docker tag mlogu6/myweb:${TAG} 3.86.154.89:8083/myweb:${TAG}"
+                sh "docker push 3.86.154.89:8083/myweb:${TAG}"
             }
         }
 
