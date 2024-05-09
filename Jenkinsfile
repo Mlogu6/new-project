@@ -15,16 +15,22 @@ pipeline {
                }
             }
       }
-   }
-   
-   stage('Build Docker Image'){
-   sh 'docker build -t mlogu6/myweb:0.0.2 .'
-   }
-   
-   stage('Docker Image Push'){
-   withCredentials([string(credentialsId: 'dockerPass', variable: 'dockerPassword')]) {
-   sh "docker login -u mlogu6 -p ${dockerPassword}"
-    }
-   sh 'docker push mlogu6/myweb:0.0.2'
+
+         stage('Build Docker Image') {
+            steps {
+                // install docker in the jenkins server
+                // execute this command to give the permission to build the image "chmod 777 /var/run/docker.sock"
+                sh 'docker build -t mlogu6/myweb:${TAG} .'
+            }
+        }
+
+         stage('Docker Image Push') {
+            steps {
+                withCredentials([string(credentialsId: 'dockerPass', variable: 'dockerPassword')]) {
+                    sh "docker login -u mlogu6 -p ${dockerPassword}"
+                }
+                sh 'docker push mlogu6/myweb:${TAG}'
+            }
+        }
    }
 }
