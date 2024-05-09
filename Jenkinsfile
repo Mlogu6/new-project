@@ -45,7 +45,21 @@ pipeline {
 
          stage('Delete Images & Container') {
             steps {
-                sh 'docker image prune --all --force && docker rm -f myproject'
+               script {
+                  // Get the list of Docker images excluding the latest one
+                  def recentImage = "mlogu6/myweb:${TAG}"
+                  def imagesToRemove = sh(script: "docker images --format '{{.Repository}}:{{.Tag}}' mlogu6/myweb | grep -v '${recentImage}'", returnStdout: true).trim().split('\n')
+
+                  // Remove the images
+                  if (imagesToRemove.length > 0) {
+                     imagesToRemove.each { image ->
+                        sh "docker rmi $image"
+            }
+         }
+            
+            // Remove the Docker container
+            sh 'docker rm -f myproject'
+               }
             }
          }
 
