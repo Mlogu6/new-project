@@ -35,5 +35,10 @@ pipeline {
                 sh 'docker push mlogu6/myweb:${TAG}'
             }
         }
+         stage (Deployment) {
+            steps {
+                sh 'docker run -d -p 8091:8080 --name myproject mlogu6/myweb:${TAG}'
+            }
+        }
    }
 }
